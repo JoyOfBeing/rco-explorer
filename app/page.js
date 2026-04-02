@@ -534,12 +534,12 @@ export default function Home() {
           J.O.B. is raising its first round through <strong>Wefunder</strong>. If you want to own a piece of the first US RCO — not as a bet on a company, but as a stake in a new way of organizing human potential — we&apos;d love to talk.
         </p>
         <a
-          href="https://itsthejob.vercel.app"
+          href="https://itsthejob.com"
           target="_blank"
           rel="noopener noreferrer"
           className="investors-cta"
         >
-          Express interest at itsthejob.vercel.app
+          Express interest at itsthejob.com
         </a>
       </section>
 
@@ -549,7 +549,7 @@ export default function Home() {
           The organism is growing.
         </p>
         <div className="footer-links">
-          <a href="https://itsthejob.vercel.app" target="_blank" rel="noopener noreferrer">J.O.B.</a>
+          <a href="https://itsthejob.com" target="_blank" rel="noopener noreferrer">J.O.B.</a>
           <a href="https://business-30.vercel.app/" target="_blank" rel="noopener noreferrer">Business 3.0</a>
           <a href="https://rco.life" target="_blank" rel="noopener noreferrer">rco.life</a>
         </div>
