@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { supabase } from '../lib/supabase';
 
 /* ============================================================
    DATA — JOB org chart
@@ -175,6 +176,59 @@ function Column({ side, data }) {
   );
 }
 
+function LeadForm({ score, total }) {
+  const [form, setForm] = useState({ name: '', email: '', org: '', question: '' });
+  const [status, setStatus] = useState('idle');
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus('submitting');
+    const { error } = await supabase.from('waitlist').insert([{
+      email: form.email,
+      source: 'rco_diagnostic',
+      metadata: JSON.stringify({
+        name: form.name,
+        org: form.org || null,
+        guiding_question: form.question || null,
+        score: `${score}/${total}`,
+      }),
+    }]);
+    setStatus(error ? 'error' : 'success');
+  }
+
+  if (status === 'success') {
+    return (
+      <div className="lead-confirmed">
+        <p>We see you. Expect to hear from us soon.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="lead-form" onSubmit={handleSubmit}>
+      <div className="lead-field">
+        <label>Name *</label>
+        <input type="text" required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" />
+      </div>
+      <div className="lead-field">
+        <label>Email *</label>
+        <input type="email" required value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@org.com" />
+      </div>
+      <div className="lead-field">
+        <label>Organization</label>
+        <input type="text" value={form.org} onChange={e => setForm(f => ({ ...f, org: e.target.value }))} placeholder="Your org (optional)" />
+      </div>
+      <div className="lead-field">
+        <label>What&apos;s your guiding question?</label>
+        <input type="text" value={form.question} onChange={e => setForm(f => ({ ...f, question: e.target.value }))} placeholder="The question your org is exploring (optional)" />
+      </div>
+      <button type="submit" className="lead-submit" disabled={status === 'submitting'}>
+        {status === 'submitting' ? 'Sending...' : status === 'error' ? 'Try again' : 'Start the conversation'}
+      </button>
+    </form>
+  );
+}
+
 function Diagnostic() {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -244,17 +298,10 @@ function Diagnostic() {
           <span className="score-label">{yesCount} of {total} signals detected</span>
         </div>
         <p className="diagnostic-verdict">{verdicts[level].body}</p>
+        {level !== 'low' && (
+          <LeadForm score={yesCount} total={total} />
+        )}
         <div className="diagnostic-actions">
-          {level !== 'low' && (
-            <a
-              href="https://business-30.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="diagnostic-cta"
-            >
-              Talk to Business 3.0
-            </a>
-          )}
           <button className="diagnostic-reset" onClick={reset}>
             Take it again
           </button>
