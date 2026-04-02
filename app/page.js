@@ -357,11 +357,8 @@ export default function Home() {
           <a href="#" className="nav-logo">RCO</a>
           <div className="nav-links">
             <a href="#what">The Model</a>
-            <a href="#why">Why Now</a>
-            <a href="#job">J.O.B.</a>
-            <a href="#diagnostic">Diagnostic</a>
+            <a href="#job">The Case Study</a>
             <a href="#build">Build Yours</a>
-            <a href="#invest">Invest</a>
           </div>
         </div>
       </nav>
