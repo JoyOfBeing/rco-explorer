@@ -493,7 +493,7 @@ export default function Home() {
               <span className="impl-step-num">1</span>
               <div>
                 <strong>Discovery</strong>
-                <p>An immersive, embodied ceremony — in person or virtual — that helps you discover your guiding question. Using somatic, emotional, and intuitive intelligence to sense what the entity wants to become, not what you think it should be.</p>
+                <p>An immersive, embodied ceremony — in person or virtual — that helps you discover your guiding question. Using multi-intelligence — somatic, emotional, and intuitive intelligence (entheogenics, optional) — to sense what the organism wants to become.</p>
               </div>
             </div>
             <div className="impl-step">
