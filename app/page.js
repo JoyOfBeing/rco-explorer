@@ -193,6 +193,15 @@ function LeadForm({ score, total }) {
         score: `${score}/${total}`,
       }),
     }]);
+    if (!error) {
+      fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data: { name: form.name, email: form.email, org: form.org, guiding_question: form.question, score: `${score}/${total}` },
+        }),
+      }).catch(() => {})
+    }
     setStatus(error ? 'error' : 'success');
   }
 
