@@ -328,6 +328,9 @@ export default function Home() {
         <p className="explainer-body" style={{ marginTop: '0.75rem' }}>
           It&apos;s built on a simple conviction: the organizational structures we inherited — corporations optimized for extraction, nonprofits optimized for survival — are not adequate for what&apos;s coming next. We need containers that can hold both commerce and conscience without one consuming the other.
         </p>
+        <p className="explainer-source" style={{ marginTop: '0.75rem' }}>
+          The RCO framework was pioneered by <a href="https://rco.life" target="_blank" rel="noopener noreferrer">rco.life</a>. The first formally incorporated RCO is <a href="https://innrwrks.com" target="_blank" rel="noopener noreferrer">Innrwrks</a>, a resilience lab in Sweden.
+        </p>
 
         <div className="explainer-principles">
           <div className="explainer-principle">
@@ -353,10 +356,6 @@ export default function Home() {
         </p>
         <p className="explainer-body" style={{ marginTop: '0.75rem' }}>
           This is what regeneration actually looks like at the organizational level: not perpetual growth, but perpetual reinvestment. The organism feeds itself, evolves itself, and creates conditions for more life.
-        </p>
-
-        <p className="explainer-source">
-          The RCO framework was pioneered by <a href="https://rco.life" target="_blank" rel="noopener noreferrer">rco.life</a>. The first formally incorporated RCO is <a href="https://innrwrks.com" target="_blank" rel="noopener noreferrer">Innrwrks</a>, a resilience lab in Sweden.
         </p>
       </section>
 
