@@ -309,10 +309,13 @@ export default function Home() {
         <p className="header-eyebrow">Regenerative Community Organism</p>
         <h1 className="header-title">The company is dead.<br />Long live the organism.</h1>
         <p className="header-sub">
-          Not a company, an organism. Sovereign entities, in regenerative relationship with one another, each uniquely exploring the same question:
+          Every RCO is organized around a guiding question — a living inquiry that shapes everything the organism does. Ours is:
         </p>
         <p className="header-question">
           What happens when being human IS the job?
+        </p>
+        <p className="header-sub">
+          Yours will be different. That&apos;s the point.
         </p>
       </header>
 
@@ -332,14 +335,25 @@ export default function Home() {
             <p>A for-profit company and a nonprofit association, legally separate but sharing the same underlying purpose. Commerce funds the mission. The mission governs the commerce. Neither can exist without the other.</p>
           </div>
           <div className="explainer-principle">
-            <span className="principle-label">Natural Lifecycle</span>
-            <p>RCOs have lifecycle stages — like organisms, not machines. They seed, grow, reproduce, and evolve. The structure honors this instead of forcing perpetual growth.</p>
+            <span className="principle-label">Guiding Question</span>
+            <p>Every RCO is organized around a central question — not a mission statement, not a slogan. A living inquiry that every entity within the organism explores in its own way. The question is the root system.</p>
           </div>
           <div className="explainer-principle">
             <span className="principle-label">Fair Value Distribution</span>
             <p>Stakeholders, community, and investors all participate in the value the organism creates. Not charity. Not extraction. Regeneration — where the system creates more than it consumes.</p>
           </div>
         </div>
+
+        <h3 className="explainer-subtitle">A model for regeneration</h3>
+        <p className="explainer-body">
+          An RCO isn&apos;t just a structure — it&apos;s a pattern of life. The organism <strong>follows the energy</strong>: when something is working, it gets more resources. When something has run its course, it gets <strong>composted</strong> — its learnings, relationships, and assets are recycled back into the system. Nothing is wasted.
+        </p>
+        <p className="explainer-body" style={{ marginTop: '0.75rem' }}>
+          The organism <strong>attracts others who share the question</strong>. New entities join — not through acquisition, but through resonance. Each one retains its full agency while being in <strong>right relationship with the whole</strong>. Like mycelium: autonomous nodes, connected underground, sharing nutrients, strengthening the network by strengthening each other.
+        </p>
+        <p className="explainer-body" style={{ marginTop: '0.75rem' }}>
+          This is what regeneration actually looks like at the organizational level: not perpetual growth, but perpetual reinvestment. The organism feeds itself, evolves itself, and creates conditions for more life.
+        </p>
 
         <p className="explainer-source">
           The RCO framework was pioneered by <a href="https://rco.life" target="_blank" rel="noopener noreferrer">rco.life</a>. The first formally incorporated RCO is <a href="https://innrwrks.com" target="_blank" rel="noopener noreferrer">Innrwrks</a>, a resilience lab in Sweden.
@@ -373,7 +387,7 @@ export default function Home() {
         <span className="job-rco-eyebrow">Case study</span>
         <h2 className="explainer-title">J.O.B. is the first RCO in the United States.</h2>
         <p className="explainer-body">
-          J.O.B. — the Joy of Being — is bringing the RCO model to America. Not as a theory, but as a living proof of concept. A dual-entity organism where a church, a marketplace, a consulting practice, immersive experiences, and a community investment pool all share the same root system.
+          J.O.B. — the Joy of Being — is bringing the RCO model to America. Not as a theory, but as a living proof of concept. Our guiding question — <em>What happens when being human IS the job?</em> — is the root system. Every entity in the organism explores it differently: a church, a marketplace, a consulting practice, immersive experiences, a community investment pool. Sovereign entities, in regenerative relationship, each following the energy of the same question.
         </p>
         <p className="explainer-body" style={{ marginTop: '0.75rem' }}>
           Click into the structure below to see how it works.

@@ -129,6 +129,12 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.85rem;
   line-height: 1.6;
 }
+.explainer-subtitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
 .explainer-source {
   font-size: 0.85rem;
   color: var(--muted);
