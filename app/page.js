@@ -689,6 +689,71 @@ function InvestForm() {
   );
 }
 
+const PHASES = [
+  {
+    num: '01',
+    title: 'Direction Finding',
+    desc: 'Identify the shared question (the why) and the working principles (the how).',
+    outputs: ['1–3 guiding questions', '3–5 collaboration principles'],
+  },
+  {
+    num: '02',
+    title: 'Territory Mapping',
+    desc: 'Identify the value the ecosystem intends to create and how participants contribute.',
+    outputs: ['Activities & capacities', 'Gaps', 'Non-profit scope (the “terrain map”)'],
+  },
+  {
+    num: '03',
+    title: 'For-Profit & Non-Profit Exploration',
+    desc: 'Align incentives, expectations, and returns. Define cultural, governance, and membership architecture.',
+    outputs: ['Minimum Viable Contribution & Return', 'Membership & membranics', 'Governance & bylaws', 'Funding model'],
+  },
+  {
+    num: '04',
+    title: 'Value Distribution',
+    desc: 'Define “what’s enough.” Set return boundaries, lifecycle, and resource recycling.',
+    outputs: ['Success definition', 'Return boundaries', 'Lifecycle model', 'Soil contributions & accountability'],
+  },
+  {
+    num: '05',
+    title: 'Vessel Building',
+    desc: 'Incorporate the structure legally and operationally.',
+    outputs: ['Bylaws & shareholder agreements', 'Legal entities & templates', 'Capital stack & banking ops', 'Governance ops & onboarding'],
+  },
+];
+
+function PhasesAccordion() {
+  const [open, setOpen] = useState(0);
+  return (
+    <div className="phase-accordion">
+      {PHASES.map((p, i) => {
+        const isOpen = open === i;
+        return (
+          <button
+            type="button"
+            key={p.num}
+            className={`phase-row ${isOpen ? 'phase-row-open' : ''}`}
+            onClick={() => setOpen(isOpen ? -1 : i)}
+            aria-expanded={isOpen}
+          >
+            <div className="phase-row-head">
+              <span className="phase-num">{p.num}</span>
+              <h4>{p.title}</h4>
+              <span className="phase-chevron" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+            </div>
+            <div className="phase-row-body">
+              <p>{p.desc}</p>
+              <ul className="phase-outputs">
+                {p.outputs.map(o => <li key={o}>{o}</li>)}
+              </ul>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function PartnerForm() {
   const [form, setForm] = useState({
     name: '',
@@ -999,60 +1064,7 @@ export default function Home() {
             Each phase invites a pause to sense if alignment exists for the next phase. After all five, the initiative becomes legally coherent, economically aligned, and culturally grounded &mdash; with clear roles, governance, ownership, value boundaries, and mechanisms for ongoing coordination.
           </p>
 
-          <div className="phase-grid">
-            <div className="phase-card">
-              <span className="phase-num">01</span>
-              <h4>Direction Finding</h4>
-              <p>Identify the shared question (the <em>why</em>) and the working principles (the <em>how</em>).</p>
-              <ul className="phase-outputs">
-                <li>1&ndash;3 guiding questions</li>
-                <li>3&ndash;5 collaboration principles</li>
-              </ul>
-            </div>
-            <div className="phase-card">
-              <span className="phase-num">02</span>
-              <h4>Territory Mapping</h4>
-              <p>Identify the value the ecosystem intends to create and how participants contribute.</p>
-              <ul className="phase-outputs">
-                <li>Activities &amp; capacities</li>
-                <li>Gaps</li>
-                <li>Non-profit scope (the &ldquo;terrain map&rdquo;)</li>
-              </ul>
-            </div>
-            <div className="phase-card">
-              <span className="phase-num">03</span>
-              <h4>For-Profit &amp; Non-Profit Exploration</h4>
-              <p>Align incentives, expectations, and returns. Define cultural, governance, and membership architecture.</p>
-              <ul className="phase-outputs">
-                <li>Minimum Viable Contribution &amp; Return</li>
-                <li>Membership &amp; membranics</li>
-                <li>Governance &amp; bylaws</li>
-                <li>Funding model</li>
-              </ul>
-            </div>
-            <div className="phase-card">
-              <span className="phase-num">04</span>
-              <h4>Value Distribution</h4>
-              <p>Define &ldquo;what&apos;s enough.&rdquo; Set return boundaries, lifecycle, and resource recycling.</p>
-              <ul className="phase-outputs">
-                <li>Success definition</li>
-                <li>Return boundaries</li>
-                <li>Lifecycle model</li>
-                <li>Soil contributions &amp; accountability</li>
-              </ul>
-            </div>
-            <div className="phase-card">
-              <span className="phase-num">05</span>
-              <h4>Vessel Building</h4>
-              <p>Incorporate the structure legally and operationally.</p>
-              <ul className="phase-outputs">
-                <li>Bylaws &amp; shareholder agreements</li>
-                <li>Legal entities &amp; templates</li>
-                <li>Capital stack &amp; banking ops</li>
-                <li>Governance ops &amp; onboarding</li>
-              </ul>
-            </div>
-          </div>
+          <PhasesAccordion />
 
           <h3 className="explainer-subtitle">What emerges</h3>
           <p className="implementer-body">
