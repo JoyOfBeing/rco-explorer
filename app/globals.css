@@ -138,10 +138,79 @@ a { color: inherit; text-decoration: none; }
 .guiding-question-section .header-question {
   margin: 1.5rem 0 0;
 }
+.question-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 900px;
+  margin: 2rem auto 0;
+  text-align: left;
+}
+.question-card {
+  padding: 1.25rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  border-top: 2px solid var(--gold);
+}
+.question-card-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  padding: 0.18rem 0.55rem;
+  background: var(--surface-hover);
+  border-radius: 999px;
+  margin-bottom: 0.6rem;
+}
+.question-card h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0 0 0.4rem;
+  color: var(--text);
+}
+.question-card-q {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--gold);
+  line-height: 1.5;
+  margin: 0;
+}
+.question-cta {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 2px;
+}
+.question-cta:hover {
+  opacity: 0.8;
+}
+@media (max-width: 768px) {
+  .question-grid { grid-template-columns: 1fr; }
+}
 
 /* Shared section styles */
-.explainer, .job-rco, .why-now, .investors {
+.explainer, .job-rco, .why-now, .investors, .partners {
   margin-bottom: 4rem;
+}
+.partners {
+  padding: 2.5rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+}
+.partners .lead-form {
+  margin-top: 1.5rem;
+}
+@media (max-width: 768px) {
+  .partners { padding: 1.5rem; }
 }
 .explainer-title {
   font-size: 1.5rem;

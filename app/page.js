@@ -689,6 +689,107 @@ function InvestForm() {
   );
 }
 
+function PartnerForm() {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    org: '',
+    region: '',
+    message: '',
+  });
+  const [status, setStatus] = useState('idle');
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus('submitting');
+    const { error } = await supabase.from('waitlist').insert([{
+      email: form.email,
+      source: 'rco_strategic_partner',
+      metadata: JSON.stringify({
+        name: form.name,
+        org: form.org || null,
+        region: form.region || null,
+        message: form.message || null,
+      }),
+    }]);
+    if (!error) {
+      fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data: {
+            name: form.name,
+            email: form.email,
+            org: form.org,
+            region: form.region,
+            message: form.message,
+            source: 'strategic_partner',
+          },
+        }),
+      }).catch(() => {});
+    }
+    setStatus(error ? 'error' : 'success');
+  }
+
+  if (status === 'success') {
+    return (
+      <div className="lead-confirmed">
+        <p>Thank you. We&apos;ll be in touch about Business 3.0 Guide training.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="lead-form invest-form" onSubmit={handleSubmit}>
+      <div className="lead-field">
+        <label>Name *</label>
+        <input type="text" required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" />
+      </div>
+      <div className="lead-field">
+        <label>Email *</label>
+        <input type="email" required value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@email.com" />
+      </div>
+      <div className="lead-field">
+        <label>Organization</label>
+        <input type="text" value={form.org} onChange={e => setForm(f => ({ ...f, org: e.target.value }))} placeholder="Optional" />
+      </div>
+      <div className="lead-field">
+        <label>Region *</label>
+        <select
+          required
+          value={form.region}
+          onChange={e => setForm(f => ({ ...f, region: e.target.value }))}
+        >
+          <option value="">Select your region</option>
+          <option value="North America">North America</option>
+          <option value="Latin America">Latin America</option>
+          <option value="Europe">Europe</option>
+          <option value="UK & Ireland">UK &amp; Ireland</option>
+          <option value="Africa">Africa</option>
+          <option value="Middle East">Middle East</option>
+          <option value="East Asia">East Asia</option>
+          <option value="South Asia">South Asia</option>
+          <option value="Southeast Asia">Southeast Asia</option>
+          <option value="Oceania">Oceania</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div className="lead-field">
+        <label>Tell us about your ecosystem</label>
+        <textarea
+          value={form.message}
+          onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+          placeholder="What are you seeing in your region? Who&apos;s ready?"
+          rows={3}
+        />
+      </div>
+      <button type="submit" className="lead-submit" disabled={status === 'submitting'}>
+        {status === 'submitting' ? 'Sending...' : status === 'error' ? 'Try again' : 'Become a Guide'}
+      </button>
+    </form>
+  );
+}
+
 /* ============================================================
    PAGE
    ============================================================ */
@@ -703,6 +804,7 @@ export default function Home() {
             <a href="#what">The Model</a>
             <a href="#job">The Case Study</a>
             <a href="#build">The Path</a>
+            <a href="#partner">Partner</a>
             <a href="#invest">Invest</a>
           </div>
         </div>
@@ -711,7 +813,7 @@ export default function Home() {
       {/* ===== HERO ===== */}
       <header className="header">
         <p className="header-eyebrow">Regenerative Community Organism</p>
-        <h1 className="header-title">From organizations<br />to living, breathing organisms.</h1>
+        <h1 className="header-title">Turning organizations into<br />living, breathing organisms.</h1>
         <p className="header-sub">
           A new form of organizational design that fuses commerce and conscience — built to regenerate, not extract.
         </p>
@@ -721,11 +823,31 @@ export default function Home() {
       <section className="guiding-question-section">
         <h2 className="explainer-title">Every RCO starts with a question.</h2>
         <p className="explainer-body">
-          Not a mission statement. Not a tagline. A living inquiry — one that shapes every entity, every decision, and every relationship inside the organism. The question isn&apos;t something you answer. It&apos;s something you keep following.
+          Not a vision or mission statement. A question. And then every member and every organization within the RCO self-organizes around that.
         </p>
+
+        <div className="question-grid">
+          <div className="question-card">
+            <span className="question-card-tag">Sweden</span>
+            <h3>InnrWrks</h3>
+            <p className="question-card-q">&ldquo;What kind of world do we want to leave behind for our children?&rdquo;</p>
+          </div>
+          <div className="question-card">
+            <span className="question-card-tag">US</span>
+            <h3>J.O.B.</h3>
+            <p className="question-card-q">&ldquo;What happens when being human is the only job left?&rdquo;</p>
+          </div>
+          <div className="question-card">
+            <span className="question-card-tag">US</span>
+            <h3>Dogcultr</h3>
+            <p className="question-card-q">&ldquo;What kind of world do dogs want to live in?&rdquo;</p>
+          </div>
+        </div>
+
         <p className="header-question">
-          What might be your guiding question?
+          What&apos;s the question you&apos;d spend the rest of your life pursuing?
         </p>
+        <a href="#readiness" className="question-cta">Explore your own →</a>
       </section>
 
       {/* ===== WHAT IS AN RCO ===== */}
@@ -963,12 +1085,18 @@ export default function Home() {
             </div>
           </div>
 
-          <p className="implementer-note">
-            We&apos;re also currently open to <strong>strategic partners</strong> who want to take the RCO process into their own region and adapt it to local needs. Through Business 3.0, we can train Guides to lead RCO formation in their own ecosystems.
-          </p>
-
           <a href="https://business-30.vercel.app/" target="_blank" rel="noopener noreferrer" className="implementer-cta">Explore Business 3.0</a>
         </div>
+      </section>
+
+      {/* ===== STRATEGIC PARTNERS ===== */}
+      <section id="partner" className="partners">
+        <span className="investors-eyebrow">For strategic partners</span>
+        <h2 className="explainer-title">Bring the RCO process to your region.</h2>
+        <p className="explainer-body">
+          We&apos;re looking for strategic partners who want to take the RCO process into their own part of the world and adapt it to local needs. Become a <strong>Business 3.0 Guide</strong> and get trained to lead organizations through RCO discovery and formation in your own ecosystem.
+        </p>
+        <PartnerForm />
       </section>
 
       {/* ===== READINESS ASSESSMENT ===== */}
