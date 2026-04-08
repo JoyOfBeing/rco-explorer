@@ -1140,6 +1140,12 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius);
   border-left: 3px solid var(--nonprofit-accent);
 }
+.invest-card-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
 .invest-card-tag {
   display: inline-block;
   font-size: 0.65rem;
@@ -1150,7 +1156,6 @@ a { color: inherit; text-decoration: none; }
   padding: 0.2rem 0.6rem;
   background: var(--surface-hover);
   border-radius: 999px;
-  margin-bottom: 0.6rem;
 }
 .invest-card-tag-live {
   color: var(--nonprofit-accent);
@@ -1253,4 +1258,94 @@ a { color: inherit; text-decoration: none; }
 .lead-field textarea::placeholder {
   color: var(--muted);
   opacity: 0.6;
+}
+
+/* ===== Question Explorer ===== */
+.question-explorer {
+  max-width: 640px;
+  margin: 2.5rem auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+.question-explorer-start,
+.question-explorer-more {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.question-explorer-start:hover,
+.question-explorer-more:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+.question-explorer-join {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--nonprofit-accent);
+  text-decoration: none;
+}
+.question-explorer-join:hover {
+  text-decoration: underline;
+}
+.question-explorer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.question-explorer-list li {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.5;
+  padding: 0.85rem 1.1rem;
+  background: var(--surface);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+  animation: fadeInUp 0.35s ease;
+}
+.question-explorer-end {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  margin: 0.25rem 0 0;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Collapsible Invest Form ===== */
+.invest-collapsed {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+.invest-expand-btn {
+  background: transparent;
+  color: var(--nonprofit-accent);
+  border: 1px solid var(--nonprofit-accent);
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.invest-expand-btn:hover {
+  background: var(--nonprofit-accent);
+  color: #fff;
+}
+.invest-expanded {
+  animation: fadeInUp 0.35s ease;
 }

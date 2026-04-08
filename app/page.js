@@ -89,39 +89,19 @@ const DATA = {
 };
 
 /* ============================================================
-   DIAGNOSTIC — "Could your organization be an RCO?"
+   WORLD QUESTIONS — click-to-reveal explorer
    ============================================================ */
-const QUESTIONS = [
-  {
-    q: 'Does your mission sometimes conflict with your revenue model?',
-    yes: 'This is the core tension the RCO resolves. When mission and money live in separate entities with shared purpose, they stop fighting.',
-    no: 'Lucky you. But if growth ever pressures you to compromise, the RCO has a structural answer.',
-  },
-  {
-    q: 'Do you serve a community that should have ownership in what you\'re building?',
-    yes: 'RCOs are designed for exactly this — community ownership through equitable value distribution, not just lip service.',
-    no: 'Even traditional businesses benefit from stakeholder alignment. The RCO model makes it structural, not aspirational.',
-  },
-  {
-    q: 'Are you trying to build something that outlasts you?',
-    yes: 'Purpose trusts and dual-entity design mean the mission can\'t be sold, acquired, or diluted. It\'s built to outlive its founders.',
-    no: 'Nothing wrong with that. But if you ever feel the pull toward legacy, the structure will be here.',
-  },
-  {
-    q: 'Do you have both commercial activities AND a public benefit or social mission?',
-    yes: 'You\'re already living the dual reality. The RCO gives it a legal and organizational home — instead of forcing one side to subsidize the other.',
-    no: 'An RCO might not be the right fit today. But as your work matures, the need for structural integrity between mission and commerce often emerges.',
-  },
-  {
-    q: 'Would your organization benefit from incubating new experiments without risking the whole?',
-    yes: 'The SPV model lets you spin up experiments, fund them independently, and let them fail or fly — without endangering the mothership.',
-    no: 'Focus is powerful. The RCO is for organisms that want to grow through exploration, not just optimization.',
-  },
-  {
-    q: 'Do you believe the organizational structures we inherited are inadequate for what\'s coming next?',
-    yes: 'Then you already understand why the RCO exists. New paradigms need new containers.',
-    no: 'We respectfully disagree. But we\'d love to buy you coffee and talk about it.',
-  },
+const WORLD_QUESTIONS = [
+  '"What would food look like if the soil were the shareholder?"',
+  '"How do we raise children in a world that\'s forgotten how to be a village?"',
+  '"What does end-of-life care look like when death is no longer the enemy?"',
+  '"How do we rebuild trust between humans and the rivers we\'ve poisoned?"',
+  '"What happens to a town when the factory leaves and no one comes to save it?"',
+  '"How do we care for the incarcerated as if they were our own kin?"',
+  '"What does it mean to grieve together in a culture that hides from loss?"',
+  '"How do we return the forests to the people who know how to listen to them?"',
+  '"What kind of medicine does a lonely generation actually need?"',
+  '"How do veterans come home to a country that doesn\'t know what home is anymore?"',
 ];
 
 /* ============================================================
@@ -212,181 +192,59 @@ function Column({ side, data }) {
   );
 }
 
-function LeadForm({ score, total }) {
-  const [form, setForm] = useState({ name: '', email: '', org: '', question: '' });
-  const [status, setStatus] = useState('idle');
+function QuestionExplorer() {
+  const [count, setCount] = useState(0);
+  const total = WORLD_QUESTIONS.length;
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setStatus('submitting');
-    const { error } = await supabase.from('waitlist').insert([{
-      email: form.email,
-      source: 'rco_diagnostic',
-      metadata: JSON.stringify({
-        name: form.name,
-        org: form.org || null,
-        guiding_question: form.question || null,
-        score: `${score}/${total}`,
-      }),
-    }]);
-    if (!error) {
-      fetch('/api/notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          data: { name: form.name, email: form.email, org: form.org, guiding_question: form.question, score: `${score}/${total}` },
-        }),
-      }).catch(() => {})
-    }
-    setStatus(error ? 'error' : 'success');
-  }
-
-  if (status === 'success') {
+  if (count === 0) {
     return (
-      <div className="lead-confirmed">
-        <p>We see you. Expect to hear from us soon.</p>
+      <div className="question-explorer">
+        <button
+          type="button"
+          className="question-explorer-start"
+          onClick={() => setCount(1)}
+        >
+          See what questions the world needs →
+        </button>
+        <a
+          href="https://business-30.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="question-explorer-join"
+        >
+          Join the community asking these questions →
+        </a>
       </div>
     );
   }
 
   return (
-    <form className="lead-form" onSubmit={handleSubmit}>
-      <div className="lead-field">
-        <label>Name *</label>
-        <input type="text" required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" />
-      </div>
-      <div className="lead-field">
-        <label>Email *</label>
-        <input type="email" required value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@org.com" />
-      </div>
-      <div className="lead-field">
-        <label>Organization</label>
-        <input type="text" value={form.org} onChange={e => setForm(f => ({ ...f, org: e.target.value }))} placeholder="Your org (optional)" />
-      </div>
-      <div className="lead-field">
-        <label>What&apos;s your guiding question?</label>
-        <input type="text" value={form.question} onChange={e => setForm(f => ({ ...f, question: e.target.value }))} placeholder="The question your org is exploring (optional)" />
-      </div>
-      <button type="submit" className="lead-submit" disabled={status === 'submitting'}>
-        {status === 'submitting' ? 'Sending...' : status === 'error' ? 'Try again' : 'Start the conversation'}
-      </button>
-    </form>
-  );
-}
-
-function Diagnostic() {
-  const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState([]);
-  const [started, setStarted] = useState(false);
-
-  const total = QUESTIONS.length;
-  const done = current >= total;
-  const yesCount = answers.filter((a) => a === true).length;
-
-  function answer(isYes) {
-    setAnswers([...answers, isYes]);
-    setCurrent(current + 1);
-  }
-
-  function reset() {
-    setCurrent(0);
-    setAnswers([]);
-    setStarted(false);
-  }
-
-  if (!started) {
-    return (
-      <section className="diagnostic">
-        <span className="diagnostic-eyebrow">Interactive</span>
-        <h2 className="diagnostic-title">Could your organization be an RCO?</h2>
-        <p className="diagnostic-intro">
-          Six questions. No right answers. Just a mirror for where your organization is
-          and whether the RCO model might be the structure it&apos;s been missing.
-        </p>
-        <button className="diagnostic-start" onClick={() => setStarted(true)}>
-          Start the diagnostic
-        </button>
-      </section>
-    );
-  }
-
-  if (done) {
-    const level =
-      yesCount >= 5 ? 'high' : yesCount >= 3 ? 'medium' : 'low';
-
-    const verdicts = {
-      high: {
-        headline: 'Your organization is ready for this.',
-        body: 'You\'re already living the tensions the RCO was designed to resolve. You don\'t need convincing — you need a blueprint. Business 3.0 can help you design and implement your RCO structure.',
-      },
-      medium: {
-        headline: 'There\'s something here.',
-        body: 'You\'re feeling the pull between mission and commerce, between growth and integrity. The RCO won\'t solve everything, but it gives those tensions a home instead of letting them tear at your culture. Worth a conversation.',
-      },
-      low: {
-        headline: 'Maybe not yet. And that\'s fine.',
-        body: 'The RCO is a specific answer to a specific set of tensions. If you\'re not feeling them yet, the model might not be for you right now. But bookmark this — organizations evolve, and when the tension shows up, you\'ll know where to look.',
-      },
-    };
-
-    return (
-      <section className="diagnostic">
-        <span className="diagnostic-eyebrow">Your result</span>
-        <h2 className="diagnostic-title">{verdicts[level].headline}</h2>
-        <div className="diagnostic-score">
-          <div className="score-bar">
-            <div
-              className="score-fill"
-              style={{ width: `${(yesCount / total) * 100}%` }}
-            />
-          </div>
-          <span className="score-label">{yesCount} of {total} signals detected</span>
-        </div>
-        <p className="diagnostic-verdict">{verdicts[level].body}</p>
-        {level !== 'low' && (
-          <LeadForm score={yesCount} total={total} />
-        )}
-        <div className="diagnostic-actions">
-          <button className="diagnostic-reset" onClick={reset}>
-            Take it again
-          </button>
-        </div>
-      </section>
-    );
-  }
-
-  const q = QUESTIONS[current];
-  const prevAnswer = current > 0 ? answers[current - 1] : null;
-  const prevQ = current > 0 ? QUESTIONS[current - 1] : null;
-
-  return (
-    <section className="diagnostic">
-      <span className="diagnostic-eyebrow">
-        Question {current + 1} of {total}
-      </span>
-      {prevQ && prevAnswer !== null && (
-        <div className="diagnostic-reflection">
-          <p>{prevAnswer ? prevQ.yes : prevQ.no}</p>
-        </div>
-      )}
-      <h2 className="diagnostic-question">{q.q}</h2>
-      <div className="diagnostic-buttons">
-        <button className="diag-btn diag-yes" onClick={() => answer(true)}>
-          Yes
-        </button>
-        <button className="diag-btn diag-no" onClick={() => answer(false)}>
-          No
-        </button>
-      </div>
-      <div className="diagnostic-progress">
-        {QUESTIONS.map((_, i) => (
-          <div
-            key={i}
-            className={`progress-dot ${i < current ? 'progress-done' : ''} ${i === current ? 'progress-current' : ''}`}
-          />
+    <div className="question-explorer question-explorer-open">
+      <ul className="question-explorer-list">
+        {WORLD_QUESTIONS.slice(0, count).map((q, i) => (
+          <li key={i}>{q}</li>
         ))}
-      </div>
-    </section>
+      </ul>
+      {count < total ? (
+        <button
+          type="button"
+          className="question-explorer-more"
+          onClick={() => setCount(count + 1)}
+        >
+          Another one →
+        </button>
+      ) : (
+        <p className="question-explorer-end">The world is full of them. Pick yours.</p>
+      )}
+      <a
+        href="https://business-30.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="question-explorer-join"
+      >
+        Join the community asking these questions →
+      </a>
+    </div>
   );
 }
 
@@ -686,6 +544,34 @@ function InvestForm() {
         {status === 'submitting' ? 'Sending...' : status === 'error' ? 'Try again' : 'Start the conversation'}
       </button>
     </form>
+  );
+}
+
+function CollapsibleInvestForm() {
+  const [open, setOpen] = useState(false);
+
+  if (!open) {
+    return (
+      <div className="invest-collapsed">
+        <button
+          type="button"
+          className="invest-expand-btn"
+          onClick={() => setOpen(true)}
+        >
+          Express your interest →
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="invest-expanded">
+      <h3 className="explainer-subtitle invest-form-title">Express your interest</h3>
+      <p className="explainer-body invest-form-intro">
+        Tell us a little about you and which RCO(s) you&apos;re drawn to. We&apos;ll be in touch to start a real conversation &mdash; no pressure, no PDF blast.
+      </p>
+      <InvestForm />
+    </div>
   );
 }
 
@@ -1019,11 +905,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ===== DIAGNOSTIC ===== */}
-      <div id="diagnostic">
-        <Diagnostic />
-      </div>
-
       {/* ===== THE PATH ===== */}
       <section id="build" className="implementer">
         <div className="implementer-inner">
@@ -1093,24 +974,11 @@ export default function Home() {
             </div>
             <div className="phase-card phase-card-small">
               <h4>Sponsor an ecosystem</h4>
-              <p>A philanthropic path. Fund the formation of an RCO for someone who has the passion and energy to give their life to it, but not the capital to begin. You hold the door open; they walk through it.</p>
-              <details className="sponsor-details">
-                <summary>See RCO questions our world needs</summary>
-                <ul className="sponsor-examples">
-                  <li>&ldquo;What would food look like if the soil were the shareholder?&rdquo;</li>
-                  <li>&ldquo;How do we raise children in a world that&apos;s forgotten how to be a village?&rdquo;</li>
-                  <li>&ldquo;What does end-of-life care look like when death is no longer the enemy?&rdquo;</li>
-                  <li>&ldquo;How do we rebuild trust between humans and the rivers we&apos;ve poisoned?&rdquo;</li>
-                  <li>&ldquo;What happens to a town when the factory leaves and no one comes to save it?&rdquo;</li>
-                  <li>&ldquo;How do we care for the incarcerated as if they were our own kin?&rdquo;</li>
-                  <li>&ldquo;What does it mean to grieve together in a culture that hides from loss?&rdquo;</li>
-                  <li>&ldquo;How do we return the forests to the people who know how to listen to them?&rdquo;</li>
-                  <li>&ldquo;What kind of medicine does a lonely generation actually need?&rdquo;</li>
-                  <li>&ldquo;How do veterans come home to a country that doesn&apos;t know what home is anymore?&rdquo;</li>
-                </ul>
-              </details>
+              <p>A philanthropic path. Fund the formation of an RCO for a community who has the passion and energy to give their life to it, but not the capital to begin.</p>
             </div>
           </div>
+
+          <QuestionExplorer />
 
           <a href="https://business-30.vercel.app/" target="_blank" rel="noopener noreferrer" className="implementer-cta">Explore Business 3.0</a>
         </div>
@@ -1134,32 +1002,35 @@ export default function Home() {
       {/* ===== INVESTORS ===== */}
       <section id="invest" className="investors">
         <span className="investors-eyebrow">For investors</span>
-        <h2 className="explainer-title">Invest in the US RCOs already forming.</h2>
+        <h2 className="explainer-title">Invest in the RCOs already forming.</h2>
         <p className="explainer-body">
-          The RCO isn&apos;t anti-profit &mdash; it&apos;s anti-extraction. Two RCOs are taking shape in the United States right now. Each one is exploring its own guiding question, building its own dual-entity structure, and opening its first round to early aligned investors. You can express interest in one or both.
+          The RCO isn&apos;t anti-profit &mdash; it&apos;s anti-extraction. Two RCOs are taking shape right now. Each one is exploring its own guiding question, building its own dual-entity structure, and opening its first round to early aligned investors. You can express interest in one or both.
         </p>
 
         <div className="invest-grid">
           <div className="invest-card">
-            <span className="invest-card-tag invest-card-tag-live">Live &middot; raising</span>
+            <div className="invest-card-tags">
+              <span className="invest-card-tag invest-card-tag-live">Live &middot; raising</span>
+              <span className="invest-card-tag">US</span>
+            </div>
             <h3>J.O.B. &mdash; The Joy of Being</h3>
             <p className="invest-card-question">&ldquo;What happens when being human is the only job left?&rdquo;</p>
-            <p>The first US RCO. Building infrastructure for the human economy that&apos;s replacing the old one. Raising via Wefunder + private leads.</p>
+            <p>The first US RCO. Building the infrastructure for the human economy that&apos;s replacing the old one &mdash; a church, a marketplace, immersive spaces, and a community investment pool, all rooted in one question. This is the paradigm shift showing up in legal form. Raising via Wefunder + private leads, with a founding community of people who want to own a piece of what comes next.</p>
             <a href="https://itsthejob.com" target="_blank" rel="noopener noreferrer" className="invest-card-link">itsthejob.com →</a>
           </div>
           <div className="invest-card">
-            <span className="invest-card-tag">Forming</span>
+            <div className="invest-card-tags">
+              <span className="invest-card-tag">Forming</span>
+              <span className="invest-card-tag">US</span>
+            </div>
             <h3>Dogcultr</h3>
             <p className="invest-card-question">&ldquo;What kind of world do dogs want to live in?&rdquo;</p>
             <p>An emerging US RCO joining J.O.B. in bringing the dual-entity model to a new ecosystem. The for-profit side will house conscious companies that honor dog sentience &mdash; dog doulas, psychedelics for dogs, journey guides. The nonprofit side: a dog church without the dogma.</p>
+            <a href="https://www.dogcultr.com" target="_blank" rel="noopener noreferrer" className="invest-card-link">dogcultr.com →</a>
           </div>
         </div>
 
-        <h3 className="explainer-subtitle invest-form-title">Express your interest</h3>
-        <p className="explainer-body invest-form-intro">
-          Tell us a little about you and which RCO(s) you&apos;re drawn to. We&apos;ll be in touch to start a real conversation &mdash; no pressure, no PDF blast.
-        </p>
-        <InvestForm />
+        <CollapsibleInvestForm />
       </section>
 
       {/* ===== FOOTER ===== */}
