@@ -1025,7 +1025,7 @@ export default function Home() {
             </div>
             <h3>Dogcultr</h3>
             <p className="invest-card-question">&ldquo;What kind of world do dogs want to live in?&rdquo;</p>
-            <p>An emerging US RCO joining J.O.B. in bringing the dual-entity model to a new ecosystem. The for-profit side will house conscious companies that honor dog sentience &mdash; dog doulas, psychedelics for dogs, journey guides. The nonprofit side: a dog church without the dogma.</p>
+            <p>An emerging US RCO joining J.O.B. in bringing the dual-entity model to a new ecosystem. The for-profit side will house conscious companies that honor dog sentience &mdash; dog doulas, journey guides. The nonprofit side: a dog church without the dogma.</p>
             <a href="https://www.dogcultr.com" target="_blank" rel="noopener noreferrer" className="invest-card-link">dogcultr.com →</a>
           </div>
         </div>
